@@ -28,14 +28,17 @@ const ToDo = () => {
     //delete users to do data
 
     const handleDelete = (id) =>{
-        fetch(`http://localhost:5000/${id}`,{
+        fetch(`http://localhost:5000/todos/${id}`,{
             method:'DELETE',
             headers:{
                 authorization:`Bearer ${localStorage.getItem('accessToken')}`
             }
         })
         .then(res=> res.json())
-        .then(data=> console.log(data))
+        .then(data=> {
+            console.log(data)
+            setReload(!reload);
+        })
     }
 
     //add users task
@@ -106,7 +109,7 @@ const ToDo = () => {
           </thead>
           <tbody>
             {
-                tasks.map((task, index) => <SingleTask key={task._id} userTask={task} index={index}></SingleTask>)
+                tasks.map((task, index) => <SingleTask key={task._id} userTask={task} index={index} handleDelete={handleDelete}></SingleTask>)
             }
           </tbody>
         </table>
