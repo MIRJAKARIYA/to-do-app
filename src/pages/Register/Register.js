@@ -65,10 +65,10 @@ const Register = () => {
     await updateProfile({ displayName: name });
   };
   useEffect(() => {
-    if (token) {
+    if (user) {
       navigate("/home");
     }
-  }, [navigate, token]);
+  }, [navigate, user]);
   return (
     <>
       <div className="flow-root">

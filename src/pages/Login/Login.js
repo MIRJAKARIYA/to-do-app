@@ -42,10 +42,10 @@ const Login = () => {
   }, [ResetError, resetError]);
 
   useEffect(() => {
-    if (token) {
+    if (user) {
       navigate(from, { replace: true });
     }
-  }, [token, from, navigate]);
+  }, [user, from, navigate]);
   return (
     <>
       <div className="flow-root">
