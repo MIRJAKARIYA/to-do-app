@@ -4,6 +4,7 @@ import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useSendPasswordResetEmail } from "react-firebase-hooks/auth";
 import { ToastContainer, toast } from "react-toastify";
 import auth from "../../firebase.init";
+import SocialLogin from "../Shared/SocialLogin";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,7 +16,6 @@ const Login = () => {
     useSignInWithEmailAndPassword(auth);
   const [sendPasswordResetEmail, sending, ResetError] =
     useSendPasswordResetEmail(auth);
-
 
   const handleForgotPassword = async () => {
     const email = emailRef.current.value;
@@ -92,9 +92,12 @@ const Login = () => {
               </div>
             </div>
           </form>
-          
+          <SocialLogin></SocialLogin>
         </div>
-        <Link to="/register" className="block text-center mt-3 underline text-blue-700">
+        <Link
+          to="/register"
+          className="block text-center mt-3 underline text-blue-700"
+        >
           create a new account...
         </Link>
       </div>

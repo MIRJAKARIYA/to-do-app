@@ -5,6 +5,7 @@ import {
 } from "react-firebase-hooks/auth";
 import { Link, useNavigate } from "react-router-dom";
 import auth from '../../firebase.init';
+import SocialLogin from "../Shared/SocialLogin";
 
 const Register = () => {
   const [passwordMatchError, setPassswordMatchError] = useState("");
@@ -128,6 +129,7 @@ const Register = () => {
               </div>
             </div>
           </form>
+          <SocialLogin></SocialLogin>
         </div>
         <Link to="/login" className="block text-center underline text-blue-700 mt-3">
           already have an account?
