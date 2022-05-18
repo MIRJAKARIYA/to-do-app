@@ -6,6 +6,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import auth from '../../firebase.init';
 import SocialLogin from "../Shared/SocialLogin";
+import useToken from "../../hooks/useToken";
 
 const Register = () => {
   const [passwordMatchError, setPassswordMatchError] = useState("");
@@ -14,6 +15,8 @@ const Register = () => {
   const navigate = useNavigate();
   const [createUserWithEmailAndPassword, user] =
     useCreateUserWithEmailAndPassword(auth);
+    const [token] = useToken(user?.user?.email);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const name = e.target.name.value;
@@ -62,10 +65,10 @@ const Register = () => {
     await updateProfile({ displayName: name });
   };
   useEffect(() => {
-    if (user) {
+    if (token) {
       navigate("/home");
     }
-  }, [navigate, user]);
+  }, [navigate, token]);
   return (
     <>
       <div className="flow-root">

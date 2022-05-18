@@ -5,6 +5,7 @@ import { useSendPasswordResetEmail } from "react-firebase-hooks/auth";
 import { ToastContainer, toast } from "react-toastify";
 import auth from "../../firebase.init";
 import SocialLogin from "../Shared/SocialLogin";
+import useToken from "../../hooks/useToken";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const Login = () => {
     useSignInWithEmailAndPassword(auth);
   const [sendPasswordResetEmail, sending, ResetError] =
     useSendPasswordResetEmail(auth);
+    const [token] = useToken(user?.user?.email);
 
   const handleForgotPassword = async () => {
     const email = emailRef.current.value;
@@ -40,10 +42,10 @@ const Login = () => {
   }, [ResetError, resetError]);
 
   useEffect(() => {
-    if (user) {
+    if (token) {
       navigate(from, { replace: true });
     }
-  }, [user, from, navigate]);
+  }, [token, from, navigate]);
   return (
     <>
       <div className="flow-root">

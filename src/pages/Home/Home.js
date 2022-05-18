@@ -1,9 +1,10 @@
 import React from 'react';
+import ToDo from './ToDo';
 
 const Home = () => {
     return (
-        <div>
-            Hello i am home
+        <div className='h-screen bg-slate-700 flow-root'>
+            <ToDo></ToDo>
         </div>
     );
 };
