@@ -1,3 +1,4 @@
+import { signOut } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast, ToastContainer } from "react-toastify";
@@ -16,12 +17,20 @@ const ToDo = () => {
     fetch(`http://localhost:5000/todos?email=${user?.email}`, {
       method: "GET",
       headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
       },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if(res.status === 401 || res.status === 403){
+            localStorage.removeItem('ACCESS_TOKEN')
+            signOut(auth);
+        }
+        return res.json();
+      })
       .then((data) => {
-        setTasks(data);
+          if(data.authorization){
+            setTasks(data.toDos);
+          }
       });
   }, [reload, user]);
 
@@ -31,10 +40,16 @@ const ToDo = () => {
     fetch(`http://localhost:5000/todos/${id}`, {
       method: "DELETE",
       headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
       },
     })
-      .then((res) => res.json())
+      .then((res) => {
+          if(res.status === 401 || res.status === 403){
+              localStorage.removeItem('ACCESS_TOKEN')
+              signOut(auth);
+          }
+          return res.json();
+      })
       .then((data) => {
         if (data.acknowledged === true) {
             toast.warning(`${task} task deleted`);
@@ -58,11 +73,17 @@ const ToDo = () => {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
       },
       body: JSON.stringify(taskDetail),
     })
-      .then((res) => res.json())
+      .then((res) =>{
+        if(res.status === 401 || res.status === 403){
+            localStorage.removeItem('ACCESS_TOKEN')
+            signOut(auth);
+        }
+        return res.json();
+      })
       .then((data) => {
         if (data.acknowledged === true) {
           toast.success(`${task} task added successfully`);
@@ -78,14 +99,20 @@ const ToDo = () => {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
       },
       body: JSON.stringify(isCompleted),
     })
-      .then((res) => res.json())
+      .then((res) =>{
+        if(res.status === 401 || res.status === 403){
+            localStorage.removeItem('ACCESS_TOKEN')
+            signOut(auth);
+        }
+        return res.json();
+      })
       .then((data) => {
         if (data.acknowledged === true) {
-            toast.success(`${task} task added successfully`);
+            toast.success(`${task} task completed successfully`);
             setReload(!reload);
           }
       });
@@ -139,7 +166,7 @@ const ToDo = () => {
               </tr>
             </thead>
             <tbody>
-              {tasks.map((task, index) => (
+              {tasks?.map((task, index) => (
                 <SingleTask
                   key={task._id}
                   userTask={task}
