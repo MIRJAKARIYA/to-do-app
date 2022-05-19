@@ -14,47 +14,50 @@ const ToDo = () => {
   //get users to do data
 
   useEffect(() => {
-    fetch(`http://localhost:5000/todos?email=${user?.email}`, {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
-      },
-    })
+    fetch(
+      `https://salty-lowlands-45498.herokuapp.com/todos?email=${user?.email}`,
+      {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
+        },
+      }
+    )
       .then((res) => {
-        if(res.status === 401 || res.status === 403){
-            localStorage.removeItem('ACCESS_TOKEN')
-            signOut(auth);
+        if (res.status === 401 || res.status === 403) {
+          localStorage.removeItem("ACCESS_TOKEN");
+          signOut(auth);
         }
         return res.json();
       })
       .then((data) => {
-          if(data.authorization){
-            setTasks(data.toDos);
-          }
+        if (data.authorization) {
+          setTasks(data.toDos);
+        }
       });
   }, [reload, user]);
 
   //delete users to do data
 
-  const handleDelete = (id,task) => {
-    fetch(`http://localhost:5000/todos/${id}`, {
+  const handleDelete = (id, task) => {
+    fetch(`https://salty-lowlands-45498.herokuapp.com/todos/${id}`, {
       method: "DELETE",
       headers: {
         authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
       },
     })
       .then((res) => {
-          if(res.status === 401 || res.status === 403){
-              localStorage.removeItem('ACCESS_TOKEN')
-              signOut(auth);
-          }
-          return res.json();
+        if (res.status === 401 || res.status === 403) {
+          localStorage.removeItem("ACCESS_TOKEN");
+          signOut(auth);
+        }
+        return res.json();
       })
       .then((data) => {
         if (data.acknowledged === true) {
-            toast.warning(`${task} task deleted`);
-            setReload(!reload);
-          }
+          toast.warning(`${task} task deleted`);
+          setReload(!reload);
+        }
       });
   };
 
@@ -69,7 +72,7 @@ const ToDo = () => {
       description,
       email,
     };
-    fetch("http://localhost:5000/todos", {
+    fetch("https://salty-lowlands-45498.herokuapp.com/todos", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -77,10 +80,10 @@ const ToDo = () => {
       },
       body: JSON.stringify(taskDetail),
     })
-      .then((res) =>{
-        if(res.status === 401 || res.status === 403){
-            localStorage.removeItem('ACCESS_TOKEN')
-            signOut(auth);
+      .then((res) => {
+        if (res.status === 401 || res.status === 403) {
+          localStorage.removeItem("ACCESS_TOKEN");
+          signOut(auth);
         }
         return res.json();
       })
@@ -90,12 +93,12 @@ const ToDo = () => {
           setReload(!reload);
         }
       });
-      e.target.reset()
+    e.target.reset();
   };
   //update users task
-  const handleComplete = (id,task) => {
+  const handleComplete = (id, task) => {
     const isCompleted = { completed: true };
-    fetch(`http://localhost:5000/todos/${id}`, {
+    fetch(`https://salty-lowlands-45498.herokuapp.com/todos/${id}`, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
@@ -103,18 +106,18 @@ const ToDo = () => {
       },
       body: JSON.stringify(isCompleted),
     })
-      .then((res) =>{
-        if(res.status === 401 || res.status === 403){
-            localStorage.removeItem('ACCESS_TOKEN')
-            signOut(auth);
+      .then((res) => {
+        if (res.status === 401 || res.status === 403) {
+          localStorage.removeItem("ACCESS_TOKEN");
+          signOut(auth);
         }
         return res.json();
       })
       .then((data) => {
         if (data.acknowledged === true) {
-            toast.success(`${task} task completed successfully`);
-            setReload(!reload);
-          }
+          toast.success(`${task} task completed successfully`);
+          setReload(!reload);
+        }
       });
   };
 

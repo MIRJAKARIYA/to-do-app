@@ -7,7 +7,7 @@ const useToken = (email) => {
     const getToken = async () => {
       if (email) {
         const { data } = await axios.post(
-          "http://localhost:5000/getToken",
+          "https://salty-lowlands-45498.herokuapp.com/getToken",
           { email }
         );
         setToken(data.accessToken);
