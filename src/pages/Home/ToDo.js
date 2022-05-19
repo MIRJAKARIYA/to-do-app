@@ -123,7 +123,7 @@ const ToDo = () => {
 
   return (
     <>
-      <div className="mt-20">
+      <div className="mt-32">
         <div className=" max-w-[500px] mx-auto">
           <form onSubmit={handleAddTask}>
             <div>

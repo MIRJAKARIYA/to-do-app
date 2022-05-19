@@ -49,7 +49,9 @@ const Login = () => {
   return (
     <>
       <div className="flow-root">
+      <h1 className="text-center text-3xl mt-10 font-semibold">Login or Sign Up to use the app</h1>
         <div className="card mx-auto mt-36 flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+          
           <form onSubmit={handleSubmit}>
             <div className="card-body">
               <div className="form-control">
